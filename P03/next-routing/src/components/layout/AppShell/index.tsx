@@ -10,7 +10,7 @@ export const AppShell = (props: AppShellProps) => {
     <main>
       <Navbar />
       {children}
-      <div>Nambah footer min</div>
+      <footer className="navbar">Nambah footer min</footer>
     </main>
   );
 };
