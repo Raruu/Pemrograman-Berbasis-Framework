@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { retrieveProducts } from "../utlis/db/servicefirebase";
+import { retrieveProducts } from "../../utlis/db/servicefirebase";
 
 type Data = {
   status: boolean;

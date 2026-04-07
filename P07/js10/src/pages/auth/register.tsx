@@ -1,3 +1,3 @@
-import HalamanRegister from "../views/auth/register";
+import HalamanRegister from "../../views/auth/register";
 
 export default HalamanRegister;

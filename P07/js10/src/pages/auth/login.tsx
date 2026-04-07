@@ -1,4 +1,4 @@
-import TampilLogin from "../views/auth/login";
+import TampilLogin from "../../views/auth/login";
 
 const halamanLogin = () => {
   return (

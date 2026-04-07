@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import styles from "../../produk/produk.module.scss";
+import styles from "../../pages/produk/produk.module.scss";
 
 type ProductType = {
   id: string;
