@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import Link from "next/link";
 import styles from "../../pages/produk/produk.module.scss";
 
 type ProductType = {
@@ -16,21 +17,25 @@ const TampilanProduk = ({ products }: { products: ProductType[] }) => {
       <div className={styles.produk__content}>
         {products.length > 0 ? (
           <>
-            {products.map((products: ProductType) => (
-              <div key={products.id} className={styles.produk__content__item}>
-                <div className={styles.produk__content__item__image}>
-                  <img src={products.image} alt={products.name} width={200} />
+            {products.map((product: ProductType) => (
+              <Link
+                href={`/produk/${product.id}`}
+                key={product.id}
+                className={styles.produk__content__item}
+              >
+                <div className={styles.produk__content__item_image}>
+                  <img src={product.image} alt={product.name} width={200} />
                 </div>
-                <h4 className={styles.produk__content__item__name}>
-                  {products.name}
+                <h4 className={styles.produk__content__item_name}>
+                  {product.name}
                 </h4>
-                <p className={styles.produk__content__item__category}>
-                  {products.category}
+                <p className={styles.produk__content__item_category}>
+                  {product.category}
                 </p>
-                <p className={styles.produk__content__item__price}>
-                  Rp {products.price.toLocaleString()}
+                <p className={styles.produk__content__item_price}>
+                  Rp {product.price.toLocaleString("id-ID")}
                 </p>
-              </div>
+              </Link>
             ))}
           </>
         ) : (
