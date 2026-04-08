@@ -1,0 +1,97 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap");
+
+$red: #c0392b;
+$red-dark: #922b21;
+$red-light: #f1948a;
+$white: #ffffff;
+
+.error {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 12px;
+  background: $white;
+  font-family: "Poppins", sans-serif;
+  position: relative;
+  overflow: hidden;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background: $red-light;
+    opacity: 0.15;
+    pointer-events: none;
+  }
+
+  &::before {
+    width: 420px;
+    height: 420px;
+    top: -120px;
+    left: -120px;
+  }
+
+  &::after {
+    width: 320px;
+    height: 320px;
+    bottom: -100px;
+    right: -80px;
+  }
+
+  &__title {
+    font-size: 7rem;
+    font-weight: 900;
+    margin: 0;
+    line-height: 1;
+    color: $red;
+    letter-spacing: -4px;
+    text-shadow: 4px 4px 0px $red-dark;
+  }
+
+  &__image {
+    width: 320px;
+    height: auto;
+    filter: drop-shadow(0 8px 16px rgba($red, 0.25));
+  }
+
+  &__description {
+    font-size: 1rem;
+    font-weight: 400;
+    color: $red-dark;
+    margin: 0;
+    background: lighten($red-light, 15%);
+    padding: 10px 24px;
+    border-radius: 999px;
+    border: 1.5px solid $red-light;
+  }
+
+  &__button {
+    margin-top: 8px;
+    padding: 12px 32px;
+    border-radius: 999px;
+    background: $red;
+    color: $white;
+    font-family: "Poppins", sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    text-decoration: none;
+    border: 2px solid $red;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+    z-index: 1;
+
+    &:hover {
+      background: $white;
+      color: $red;
+      transform: translateY(-2px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
