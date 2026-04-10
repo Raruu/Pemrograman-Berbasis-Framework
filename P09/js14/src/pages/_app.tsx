@@ -1,27 +1,18 @@
-import AppShell from "@/components/layout/AppShell";
-import "@/styles/globals.css";
 import type { AppProps } from "next/app";
-import { useRouter } from "next/router";
-import { useEffect, useRef } from "react";
+// import Navbar from "@/components/layouts/navbar";
+import { SessionProvider } from "next-auth/react";
+import AppShell from "@/components/layout/AppShell";
+import "../styles/globals.css";
 
-const publicRoutes = ["/auth/login", "/auth/register"];
-
-export default function App({ Component, pageProps }: AppProps) {
-  const router = useRouter();
-  const routerRef = useRef(router);
-
-  // useEffect(() => {
-  //   const isLoggedIn = localStorage.getItem("isLoggedIn");
-  //   const isPublicRoute = publicRoutes.includes(router.pathname);
-
-  //   if (!isLoggedIn && !isPublicRoute) {
-  //     routerRef.current.push("/auth/login");
-  //   }
-  // }, [router.pathname]);
-
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps) {
   return (
-    <AppShell>
-      <Component {...pageProps} />
-    </AppShell>
+    <SessionProvider session={pageProps.session}>
+      <AppShell>
+        <Component {...pageProps} />
+      </AppShell>
+    </SessionProvider>
   );
 }
