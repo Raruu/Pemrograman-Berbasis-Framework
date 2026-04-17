@@ -1,3 +1,11 @@
-import HalamanRegister from "../../views/auth/register";
+import TampilanRegister from "@/views/auth/register";
 
-export default HalamanRegister;
+const halamanRegister = () => {
+  return (
+    <>
+      <TampilanRegister />
+    </>
+  );
+};
+
+export default halamanRegister;
