@@ -1,45 +1,97 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Link from "next/link";
+import style from "./login.module.scss";
+import { useState } from "react";
 import { useRouter } from "next/router";
-// import styles from "./login.module.css";
-import styles from "./login.module.scss";
+import { signIn } from "next-auth/react";
 
-const TampilLogin = () => {
-  const { push } = useRouter();
+const TampilanLogin = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const { push, query } = useRouter();
+  const callbackUrl: any = query.callbackUrl || "/";
+  const [error, setError] = useState("");
 
-  const handlerLogin = () => {
-    // Simpan status login ke localStorage
-    localStorage.setItem("isLoggedIn", "true");
-    // Navigasi imperatif ke halaman produk setelah login
-    push("/produk");
-  };
+  const handleSubmit = async (event: any) => {
+    event.preventDefault();
+    setError("");
+    setIsLoading(true);
 
-  const handlerLogout = () => {
-    localStorage.removeItem("isLoggedIn");
+    //const form = event.currentTarget; ...
+    // }
+    try {
+      const res = await signIn("credentials", {
+        redirect: false,
+        email: event.target.email.value,
+        password: event.target.password.value,
+        callbackUrl,
+      });
+
+      // console.log("signIn response:", res);
+      if (!res?.error) {
+        setIsLoading(false);
+        push(callbackUrl);
+      } else {
+        setIsLoading(false);
+        setError(res?.error || "Login failed");
+      }
+    } catch (error) {
+      setIsLoading(false);
+      setError("wrong email or password");
+    }
   };
 
   return (
-    <div className={styles.login}>
-      <h1 className="text-3xl font-bold text-blue-600">Halaman Login</h1>
-      {/* Navigasi imperatif: Login → Produk */}
-      <button onClick={handlerLogin}>Login</button>
-      <br />
-      <br />
-      <button onClick={handlerLogout}>Logout / hapus session</button>
-      <br />
-      <br />
-      <h1
-        style={{
-          color: "red",
-          borderRadius: "10px",
-          padding: "10px",
-          border: "1px solid red",
-        }}
-      >
-        Belum punya akun?
-      </h1>
-      <Link href="/auth/register">Daftar di sini</Link>
-    </div>
+    <>
+      <div className={style.login}>
+        {error && <p className={style.login__error}>{error}</p>}
+        <h1 className={style.login__title}>Halaman Login</h1>
+        <div className={style.login__form}>
+          <form onSubmit={handleSubmit}>
+            <div className={style.login__form__item}>
+              <label htmlFor="email" className={style.login__form__item__label}>
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Email"
+                className={style.login__form__item__input}
+              />
+            </div>
+
+            <div className={style.login__form__item}>
+              <label
+                htmlFor="Password"
+                className={style.login__form__item__label}
+              >
+                Password
+              </label>
+              <input
+                type="password"
+                id="Password"
+                name="password"
+                placeholder="Password"
+                className={style.login__form__item__input}
+              />
+            </div>
+            <button
+              type="submit"
+              className={style.login__form__item__button}
+              disabled={isLoading}
+            >
+              {isLoading ? "Memproses..." : "Login"}
+            </button>
+          </form>
+          <br />
+          <p className={style.login__form__item__text}>
+            Tidak punya akun?{" "}
+            <Link href="/auth/register">Ke Halaman Register</Link>
+          </p>
+        </div>
+      </div>
+    </>
   );
 };
 
-export default TampilLogin;
+export default TampilanLogin;
