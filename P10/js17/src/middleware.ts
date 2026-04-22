@@ -6,5 +6,10 @@ const baseMiddleware: NextMiddleware = () => {
   return NextResponse.next();
 };
 
-export default withAuth(baseMiddleware, ["/produk", "/profile", "/admin"]);
+export default withAuth(baseMiddleware, [
+  "/produk",
+  "/profile",
+  "/admin",
+  "/editor",
+]);
 

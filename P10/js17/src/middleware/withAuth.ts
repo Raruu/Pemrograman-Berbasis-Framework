@@ -6,7 +6,14 @@ import {
   NextResponse,
 } from "next/server";
 
-const hanyaAdmin = ["/admin"];
+const roleProtectedRoutes: Record<string, readonly string[]> = {
+  "/admin": ["admin"],
+  "/editor": ["admin", "editor"],
+};
+
+function matchesRoute(pathname: string, route: string) {
+  return pathname === route || pathname.startsWith(`${route}/`);
+}
 
 export default function withAuth(
   middleware: NextMiddleware,
@@ -14,8 +21,11 @@ export default function withAuth(
 ) {
   return async (req: NextRequest, next: NextFetchEvent) => {
     const pathname = req.nextUrl.pathname;
+    const shouldCheckAuth = requireAuth.some((route) =>
+      matchesRoute(pathname, route),
+    );
 
-    if (requireAuth.includes(pathname)) {
+    if (shouldCheckAuth) {
       const token = await getToken({
         req,
         secret: process.env.NEXTAUTH_SECRET,
@@ -27,8 +37,16 @@ export default function withAuth(
         return NextResponse.redirect(Url);
       }
 
-      if (token.role !== "admin" && hanyaAdmin.includes(pathname)) {
-        return NextResponse.redirect(new URL("/", req.url));
+      const protectedRoute = Object.entries(roleProtectedRoutes).find(
+        ([route]) => matchesRoute(pathname, route),
+      );
+
+      if (protectedRoute) {
+        const [, allowedRoles] = protectedRoute;
+
+        if (!allowedRoles.includes(token.role as string)) {
+          return NextResponse.redirect(new URL("/", req.url));
+        }
       }
     }
 

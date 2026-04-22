@@ -92,6 +92,25 @@
   opacity: 0.95;
 }
 
+.navbar__user__text {
+  white-space: nowrap;
+}
+
+.navbar__link {
+  color: #dbeafe;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  transition: all 0.25s ease;
+}
+
+.navbar__link:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
 /* Avatar image */
 .navbar__user__image {
   width: 42px;
@@ -106,4 +125,15 @@
 .navbar__user__image:hover {
   transform: scale(1.1);
   box-shadow: 0 0 15px rgba(59, 130, 246, 0.8);
+}
+
+@media (max-width: 768px) {
+  .navbar__right {
+    gap: 12px;
+  }
+
+  .navbar__link {
+    padding: 6px 10px;
+    font-size: 14px;
+  }
 }

@@ -1,9 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { signIn, signInWithGoogle } from "@/utlis/db/servicefirebase";
+import {
+  signIn,
+  signInWithGitHub,
+  signInWithGoogle,
+} from "@/utlis/db/servicefirebase";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import GoogleProvider from "next-auth/providers/google";
+import GitHubProvider from "next-auth/providers/github";
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -46,6 +51,15 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID || "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
     }),
+    GitHubProvider({
+      clientId: process.env.GITHUB_ID || "",
+      clientSecret: process.env.GITHUB_SECRET || "",
+      authorization: {
+        params: {
+          scope: "read:user user:email",
+        },
+      },
+    }),
   ],
   callbacks: {
     async jwt({ token, account, profile, user }: any) {
@@ -54,25 +68,26 @@ export const authOptions: NextAuthOptions = {
         token.fullname = user.fullname;
         token.role = user.role;
       }
-      // Jika login dengan Google, tambahkan informasi yang diperlukan ke token
-      if (account?.provider === "google") {
+      if (account?.provider === "google" || account?.provider === "github") {
         const data = {
-          fullname: user.name,
-          email: user.email,
-          image: user.image,
+          fullname: user?.name || profile?.name || "",
+          email: user?.email || profile?.email || "",
+          image: user?.image || profile?.image || null,
           type: account.provider,
         };
 
-        await signInWithGoogle(data, (result: any) => {
-          // Pastikan mengecek result.status sesuai dengan object yang dikirim
-          if (result.status) {
-            token.fullname = result.data.fullname;
-            token.email = result.data.email;
-            token.image = result.data.image;
-            token.type = result.data.type;
-            token.role = result.data.role;
-          }
-        });
+        const result =
+          account.provider === "github"
+            ? await signInWithGitHub(data)
+            : await signInWithGoogle(data);
+
+        if (result) {
+          token.fullname = result.fullname;
+          token.email = result.email;
+          token.image = result.image;
+          token.type = result.type;
+          token.role = result.role;
+        }
       }
       return token;
     },

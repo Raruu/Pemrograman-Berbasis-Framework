@@ -34,7 +34,7 @@ const TampilanLogin = () => {
         setIsLoading(false);
         setError(res?.error || "Login failed");
       }
-    } catch (error) {
+    } catch {
       setIsLoading(false);
       setError("wrong email or password");
     }
@@ -83,11 +83,21 @@ const TampilanLogin = () => {
             </button>
             <br /> <br />
             <button
+              type="button"
               onClick={() => signIn("google", { callbackUrl, redirect: false })}
               className={style.login__form__item__button}
               disabled={isLoading}
             >
               {isLoading ? "Loading..." : "sign in with google"}
+            </button>
+            <br /> <br />
+            <button
+              type="button"
+              onClick={() => signIn("github", { callbackUrl, redirect: false })}
+              className={style.login__form__item__button}
+              disabled={isLoading}
+            >
+              {isLoading ? "Loading..." : "sign in with github"}
             </button>
           </form>
           <br />

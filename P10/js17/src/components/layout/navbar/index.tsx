@@ -1,9 +1,10 @@
-/* eslint-disable @next/next/no-img-element */
+import Image from "next/image";
+import Link from "next/link";
 import styles from "./navbar.module.css";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 const Navbar = () => {
-  const { data }: any = useSession();
+  const { data } = useSession();
   //const { data: session } = useSession()
   // console.log("session", session)
   console.log("data", data);
@@ -15,15 +16,30 @@ const Navbar = () => {
         {data ? (
           <>
             <div className={styles.navbar__user}>
-              Welcome, {data.user?.fullname}
+              <span className={styles.navbar__user__text}>
+                Welcome, {data.user?.fullname}
+              </span>
               {data.user.image && (
-                <img
+                <Image
                   src={data.user.image}
-                  alt={data.user.fullname}
+                  alt={data.user.fullname || "User avatar"}
+                  width={42}
+                  height={42}
                   className={styles.navbar__user__image}
+                  priority={false}
                 />
               )}
             </div>
+            {(data.user.role === "admin" || data.user.role === "editor") && (
+              <Link href="/editor" className={styles.navbar__link}>
+                Editor
+              </Link>
+            )}
+            {data.user.role === "admin" && (
+              <Link href="/admin" className={styles.navbar__link}>
+                Admin
+              </Link>
+            )}
             <button
               className={`${styles.navbar__button} ${styles["navbar__button--danger"]}`}
               onClick={() => signOut()}
