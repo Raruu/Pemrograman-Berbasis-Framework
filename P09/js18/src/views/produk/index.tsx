@@ -1,6 +1,6 @@
-/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import styles from "../../pages/produk/produk.module.scss";
+import Image from "next/image";
 
 type ProductType = {
   id: string;
@@ -24,7 +24,7 @@ const TampilanProduk = ({ products }: { products: ProductType[] }) => {
                 className={styles.produk__content__item}
               >
                 <div className={styles.produk__content__item_image}>
-                  <img src={product.image} alt={product.name} width={200} />
+                  <Image src={product.image} alt={product.name} width={200} height={200} />
                 </div>
                 <h4 className={styles.produk__content__item_name}>
                   {product.name}

@@ -1,7 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
 import styles from "@/styles/404.module.scss";
 import Head from "next/head";
 import Link from "next/link";
+import Image from "next/image";
 
 const Custom404 = () => {
   return (
@@ -10,9 +10,11 @@ const Custom404 = () => {
         <title>404 Tidak Ditemukan</title>
       </Head>
       <h1 className={styles.error__title}>404</h1>
-      <img
+      <Image
         src="/kei-404.png"
         alt="404 Illustration"
+        width={400}
+        height={200}
         className={styles.error__image}
       />
       <p className={styles.error__description}>

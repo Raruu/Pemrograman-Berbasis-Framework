@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "./navbar.module.css";
 import { signIn, signOut, useSession } from "next-auth/react";
+import Script from "next/dist/client/script";
 
 const Navbar = () => {
   const { data } = useSession();
@@ -10,7 +11,12 @@ const Navbar = () => {
   console.log("data", data);
   return (
     <div className={styles.navbar}>
-      <div className={styles.navbar__brand}>MyApp</div>
+      {/* <div className={styles.navbar__brand}>MyApp</div> */}
+
+      <div className={styles.navbar__brand} id="title"></div>
+      <Script id="title-script" strategy="lazyOnload">
+        {`document.getElementById('title').innerHTML = 'MyApp';`}
+      </Script>
 
       <div className={styles.navbar__right}>
         {data ? (
